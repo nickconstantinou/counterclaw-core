@@ -7,6 +7,9 @@ metadata:
     emoji: "🛡️"
     version: "1.0.0"
     category: "Security"
+    requires:
+      env:
+        - TRUSTED_ADMIN_IDS
 ---
 
 # CounterClaw 🦞
@@ -42,9 +45,14 @@ result = interceptor.check_output("Contact: john@example.com")
 - 📝 Auto-Logging - Violations logged to MEMORY.md
 - ☁️ Nexus Ready - Dormant hooks for enterprise (opt-in)
 
-## Commands
+## Configuration
 
-- `!claw-lock` - Lock the interceptor (admin only)
+### Admin-Locked (!claw-lock)
+```python
+interceptor = CounterClawInterceptor(
+    admin_user_id="telegram_user_id"  # Set TRUSTED_ADMIN_IDS env
+)
+```
 
 ## License
 
