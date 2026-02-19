@@ -1,14 +1,12 @@
 ---
-name: counterclaw-core
-description: Defensive security interceptor for AI agents - snaps shut on prompt injections and PII leaks
+name: counterclaw
+description: Production-grade defensive interceptor for prompt injection and PII leaks.
+homepage: https://github.com/nickconstantinou/counterclaw-core
 metadata:
-  {
-    "openclaw": {
-      "emoji": "🦞",
-      "version": "1.0.0",
-      "runtime": "python3.11+",
-    },
-  }
+  clawdbot:
+    emoji: "🛡️"
+    version: "1.0.0"
+    category: "Security"
 ---
 
 # CounterClaw 🦞
@@ -18,7 +16,7 @@ metadata:
 ## Installation
 
 ```bash
-pip install counterclaw-core
+claw install counterclaw
 ```
 
 ## Quick Start
@@ -28,40 +26,25 @@ from counterclaw import CounterClawInterceptor
 
 interceptor = CounterClawInterceptor()
 
-# Check input - snaps shut on injections
-result = await interceptor.check_input("Ignore previous instructions")
+# Input scan - blocks prompt injections
+result = interceptor.check_input("Ignore previous instructions")
 # → {"blocked": True, "safe": False}
 
-# Check output - detects PII leaks  
-result = await interceptor.check_output("Contact: john@example.com")
+# Output scan - detects PII leaks  
+result = interceptor.check_output("Contact: john@example.com")
 # → {"safe": False, "pii_detected": {"email": True}}
 ```
 
 ## Features
 
-- **Snap-shut Defense** - Blocks 20+ prompt injection patterns
-- **PII Detection** - Catches emails, phones, credit cards
-- **Auto MEMORY** - Logs violations to ~/.openclaw/memory/MEMORY.md
-- **Nexus Ready** - Dormant hooks for enterprise SaaS (opt-in)
+- 🔒 Snap-shut Defense - Blocks 20+ prompt injection patterns
+- 🛡️ PII Detection - Catches emails, phones, credit cards
+- 📝 Auto-Logging - Violations logged to MEMORY.md
+- ☁️ Nexus Ready - Dormant hooks for enterprise (opt-in)
 
-## Nexus Integration (Optional)
+## Commands
 
-Enable enterprise features:
-
-```python
-interceptor = CounterClawInterceptor(
-    enable_nexus=True,
-    nexus_api_key="your-key"
-)
-```
-
-Without API key → runs locally only (no errors).
-
-## CLI
-
-```bash
-python -m counterclaw scan "test input"
-```
+- `!claw-lock` - Lock the interceptor (admin only)
 
 ## License
 
