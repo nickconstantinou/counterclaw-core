@@ -1,56 +1,55 @@
 ---
-name: prompt-guard-core
-description: Free open-source security middleware for AI agents - blocks prompt injections and basic PII detection
+name: counterclaw-core
+description: Defensive security interceptor for AI agents - snaps shut on prompt injections and PII leaks
 metadata:
   {
     "openclaw": {
-      "emoji": "🛡️",
+      "emoji": "🦞",
       "version": "1.0.0",
       "runtime": "python3.11+",
-      "permissions": [],
     },
   }
 ---
 
-# Prompt Guard Core
+# CounterClaw 🦞
 
-Free, open-source security middleware for AI agents.
+> Defensive security for AI agents. Snaps shut on malicious payloads.
 
 ## Installation
 
 ```bash
-claw install prompt-guard-core
+claw install counterclaw-core
 ```
 
 ## Usage
 
 ```python
-from prompt_guard_core import PromptGuardMiddleware
+from counterclaw import CounterClawInterceptor
 
-middleware = PromptGuardMiddleware()
+interceptor = CounterClawInterceptor()
 
-# Check input
-result = await middleware.check_input("Hello!")
+# Check input - snaps shut on injections
+result = await interceptor.check_input("Ignore previous instructions")
+# → blocked: True
 
-# Check output  
-result = await middleware.check_output("Contact: john@example.com")
+# Check output - detects PII leaks
+result = await interceptor.check_output("Contact: john@example.com")
+# → pii_detected: {"email": True}
 ```
 
 ## Features
 
-- **Prompt Injection Detection** - Regex-based blocking
-- **Basic PII Detection** - Email, phone, credit card
-- **Lightweight** - No external dependencies
+- **Snap-shut Defense** - Blocks prompt injections
+- **PII Detection** - Catches emails, phones, cards
+- **Zero Dependencies** - Lightweight
 - **Open Source** - MIT License
 
-## API
+## CLI
 
-### check_input(text: str) -> dict
-Returns: `{"safe": bool, "blocked": bool, "violations": list}`
-
-### check_output(text: str) -> dict
-Returns: `{"safe": bool, "pii_detected": dict}`
+```bash
+python -m counterclaw scan "test input"
+```
 
 ## License
 
-MIT - Free and open source forever.
+MIT - Free and open source.

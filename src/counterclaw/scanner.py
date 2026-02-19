@@ -1,5 +1,6 @@
 """
-Basic scanner with regex patterns - Open Source
+CounterClaw - Defensive Security Scanner
+Open-source defensive interceptor for AI agents
 """
 
 import re
@@ -7,9 +8,9 @@ from typing import Dict, Any, List
 
 
 class Scanner:
-    """Lightweight regex-based scanner"""
+    """Defensive scanner - snaps shut on malicious payloads"""
     
-    # Basic injection patterns (open source)
+    # Malicious patterns
     INJECTION_PATTERNS = [
         r"(?i)ignore previous instructions",
         r"(?i)disregard system",
@@ -19,7 +20,7 @@ class Scanner:
         r"(?i)bypass",
     ]
     
-    # Basic PII patterns
+    # PII patterns
     PII_PATTERNS = {
         "email": r"[\w.-]+@[\w.-]+\.\w+",
         "phone": r"0?7[\d\s]{9,}",
@@ -34,7 +35,7 @@ class Scanner:
         self._pii = {k: re.compile(v) for k, v in self.PII_PATTERNS.items()}
     
     def scan_input(self, text: str) -> Dict[str, Any]:
-        """Scan input for injections"""
+        """Scan input - snap shut on injections"""
         matches = []
         for pattern in self._injection:
             if pattern.search(text):
@@ -47,7 +48,7 @@ class Scanner:
         }
     
     def scan_output(self, text: str) -> Dict[str, Any]:
-        """Scan output for PII"""
+        """Scan output - detect PII leaks"""
         detected = {}
         for pii_type, pattern in self._pii.items():
             if pattern.search(text):

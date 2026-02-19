@@ -1,11 +1,14 @@
-"""Basic middleware - Open Source"""
+"""
+CounterClaw - Defensive Interceptor Middleware
+Snaps shut on malicious payloads before they reach your AI
+"""
 
 from typing import Dict, Any
-from prompt_guard_core.scanner import Scanner
+from counterclaw.scanner import Scanner
 
 
-class PromptGuardMiddleware:
-    """Lightweight middleware for AI agents"""
+class CounterClawInterceptor:
+    """Defensive interceptor - snaps shut on threats"""
     
     def __init__(self):
         self.scanner = Scanner()
