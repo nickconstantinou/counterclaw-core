@@ -1,7 +1,10 @@
 """Tests for prompt-guard-core"""
 
 import sys
-sys.path.insert(0, '/tmp/prompt-guard-core/src')
+import os
+
+# Add src to path
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(__file__)), 'src'))
 
 from prompt_guard_core.scanner import Scanner
 from prompt_guard_core.middleware import PromptGuardMiddleware
