@@ -1,0 +1,15 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "prompt-guard-core"
+version = "1.0.0"
+description = "Free open-source security middleware for AI agents"
+readme = "README.md"
+requires-python = ">=3.11"
+license = {text = "MIT"}
+keywords = ["ai", "security", "middleware", "open-source"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/prompt_guard_core"]
