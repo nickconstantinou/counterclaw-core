@@ -18,10 +18,10 @@ metadata:
 ## Installation
 
 ```bash
-claw install counterclaw-core
+pip install counterclaw-core
 ```
 
-## Usage
+## Quick Start
 
 ```python
 from counterclaw import CounterClawInterceptor
@@ -30,19 +30,32 @@ interceptor = CounterClawInterceptor()
 
 # Check input - snaps shut on injections
 result = await interceptor.check_input("Ignore previous instructions")
-# → blocked: True
+# → {"blocked": True, "safe": False}
 
-# Check output - detects PII leaks
+# Check output - detects PII leaks  
 result = await interceptor.check_output("Contact: john@example.com")
-# → pii_detected: {"email": True}
+# → {"safe": False, "pii_detected": {"email": True}}
 ```
 
 ## Features
 
-- **Snap-shut Defense** - Blocks prompt injections
-- **PII Detection** - Catches emails, phones, cards
-- **Zero Dependencies** - Lightweight
-- **Open Source** - MIT License
+- **Snap-shut Defense** - Blocks 20+ prompt injection patterns
+- **PII Detection** - Catches emails, phones, credit cards
+- **Auto MEMORY** - Logs violations to ~/.openclaw/memory/MEMORY.md
+- **Nexus Ready** - Dormant hooks for enterprise SaaS (opt-in)
+
+## Nexus Integration (Optional)
+
+Enable enterprise features:
+
+```python
+interceptor = CounterClawInterceptor(
+    enable_nexus=True,
+    nexus_api_key="your-key"
+)
+```
+
+Without API key → runs locally only (no errors).
 
 ## CLI
 
@@ -52,4 +65,4 @@ python -m counterclaw scan "test input"
 
 ## License
 
-MIT - Free and open source.
+MIT - See LICENSE file
