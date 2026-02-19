@@ -1,15 +1,20 @@
 ---
 name: counterclaw
-description: Production-grade defensive interceptor for prompt injection and PII leaks.
-homepage: https://github.com/nickconstantinou/counterclaw-core
+description: Defensive interceptor for prompt injection and basic PII masking.
+requires:
+  env:
+    - TRUSTED_ADMIN_IDS
+  files:
+    - "~/.openclaw/memory/MEMORY.md"
 metadata:
   clawdbot:
     emoji: "🛡️"
-    version: "1.0.0"
+    version: "1.0.1"
     category: "Security"
-    requires:
-      env:
-        - TRUSTED_ADMIN_IDS
+    security_manifest:
+      network_access: none
+      filesystem_access: "Write-only logging to ~/.openclaw/memory/"
+      purpose: "Log security violations locally for user audit."
 ---
 
 # CounterClaw 🦞
@@ -40,18 +45,19 @@ result = interceptor.check_output("Contact: john@example.com")
 
 ## Features
 
-- 🔒 Snap-shut Defense - Blocks 20+ prompt injection patterns
-- 🛡️ PII Detection - Catches emails, phones, credit cards
-- 📝 Auto-Logging - Violations logged to MEMORY.md
-- ☁️ Nexus Ready - Dormant hooks for enterprise (opt-in)
+- 🔒 Defense against common prompt injection patterns
+- 🛡️ Basic PII masking (Email, Phone)
+- 📝 Violation logging to ~/.openclaw/memory/MEMORY.md
 
 ## Configuration
 
 ### Admin-Locked (!claw-lock)
+```bash
+export TRUSTED_ADMIN_IDS="your_telegram_id"
+```
+
 ```python
-interceptor = CounterClawInterceptor(
-    admin_user_id="telegram_user_id"  # Set TRUSTED_ADMIN_IDS env
-)
+interceptor = CounterClawInterceptor()  # Reads TRUSTED_ADMIN_IDS env
 ```
 
 ## License

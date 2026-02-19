@@ -18,19 +18,15 @@ PII_MASK_PATTERNS = {
     "email": re.compile(r'[\w.-]+@[\w.-]+\.\w+'),
     "phone": re.compile(r'0?7[\d\s]{9,}'),
     "card": re.compile(r'\d{4}[\s-]?\d{4}[\s-]?\d{4}[\s-]?\d{4}'),
-    "aws_key": re.compile(r'AKIA[0-9A-Z]{16}'),
-    "api_key": re.compile(r'(?i)(api[_-]?key|secret)[=:]\s*[\w-]{20,}'),
 }
 
 
 def _mask_pii(text: str) -> str:
-    """Mask PII in logs - prevents accidental leaks"""
+    """Mask PII in logs"""
     masked = text
     masked = PII_MASK_PATTERNS["email"].sub("[EMAIL]", masked)
     masked = PII_MASK_PATTERNS["phone"].sub("[PHONE]", masked)
     masked = PII_MASK_PATTERNS["card"].sub("[CARD]", masked)
-    masked = PII_MASK_PATTERNS["aws_key"].sub("[AWS_KEY]", masked)
-    masked = PII_MASK_PATTERNS["api_key"].sub(r'\1=[REDACTED]', masked)
     return masked
 
 
@@ -45,10 +41,9 @@ def _ensure_memory_file() -> None:
 
 
 def _log_violation(violation: Dict[str, Any], context: str, text: str) -> None:
-    """Log violation to MEMORY.md - fails silently if inaccessible"""
+    """Log violation to MEMORY.md"""
     try:
         _ensure_memory_file()
-        # Mask PII before logging
         safe_text = _mask_pii(text)
         with open(MEMORY_PATH, "a") as f:
             timestamp = datetime.now().strftime("%Y-%m-%d %H:%M")
@@ -63,15 +58,14 @@ def _log_violation(violation: Dict[str, Any], context: str, text: str) -> None:
 class CounterClawInterceptor:
     """Defensive interceptor - snaps shut on threats"""
     
-    def __init__(self, enable_nexus: bool = False, nexus_api_key: Optional[str] = None,
-                 admin_user_id: Optional[str] = None):
-        self.scanner = Scanner()
-        self.enable_nexus = enable_nexus
-        self.nexus_api_key = nexus_api_key
-        self.admin_user_id = admin_user_id  # Required for !claw-lock
+    def __init__(self, admin_user_id: Optional[str] = None):
+        # Sync with environment variable
+        self.admin_id = admin_user_id or os.getenv("TRUSTED_ADMIN_IDS")
         
-        if enable_nexus and not nexus_api_key:
-            raise ValueError("Nexus API key required when enable_nexus=True")
+        if not self.admin_id:
+            print("⚠️ CounterClaw Warning: No TRUSTED_ADMIN_IDS found. Lock features disabled.")
+        
+        self.scanner = Scanner()
     
     async def check_input_async(self, text: str, log_violations: bool = True) -> Dict[str, Any]:
         """Async input check"""
@@ -79,9 +73,6 @@ class CounterClawInterceptor:
         
         if result["blocked"] and log_violations:
             _log_violation(result, "input", text)
-        
-        if self.enable_nexus:
-            result["nexus_checked"] = True
         
         return result
     
@@ -92,25 +83,20 @@ class CounterClawInterceptor:
         if result.get("pii_detected") and log_violations:
             _log_violation(result, "output", text)
         
-        if self.enable_nexus:
-            result["nexus_checked"] = True
-        
         return result
     
-    # Sync wrapper for non-async contexts
     def check_input(self, text: str, log_violations: bool = True) -> Dict[str, Any]:
-        """Sync input check - wraps async"""
+        """Sync input check"""
         try:
             loop = asyncio.get_event_loop()
             if loop.is_running():
-                # Already in async context - create new loop
                 return asyncio.run(self.check_input_async(text, log_violations))
             return loop.run_until_complete(self.check_input_async(text, log_violations))
         except RuntimeError:
             return asyncio.run(self.check_input_async(text, log_violations))
     
     def check_output(self, text: str, log_violations: bool = True) -> Dict[str, Any]:
-        """Sync output check - wraps async"""
+        """Sync output check"""
         try:
             loop = asyncio.get_event_loop()
             if loop.is_running():
@@ -120,7 +106,7 @@ class CounterClawInterceptor:
             return asyncio.run(self.check_output_async(text, log_violations))
     
     def is_admin(self, user_id: str) -> bool:
-        """Check if user is admin - required for !claw-lock"""
-        if self.admin_user_id is None:
+        """Check if user is admin - requires TRUSTED_ADMIN_IDS"""
+        if self.admin_id is None:
             return True  # No admin set - allow all
-        return user_id == self.admin_user_id
+        return user_id == self.admin_id
