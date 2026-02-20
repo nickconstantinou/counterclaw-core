@@ -69,7 +69,7 @@ def test_admin_check():
 def test_no_admin_all_allowed():
     """Test no admin set = allow all"""
     interceptor = CounterClawInterceptor()
-    assert interceptor.is_admin("anyone") == True
+    assert interceptor.is_admin("anyone") == False
 
 
 if __name__ == "__main__":

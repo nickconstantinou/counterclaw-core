@@ -108,5 +108,5 @@ class CounterClawInterceptor:
     def is_admin(self, user_id: str) -> bool:
         """Check if user is admin - requires TRUSTED_ADMIN_IDS"""
         if self.admin_id is None:
-            return True  # No admin set - allow all
+            return False  # No admin set - deny by default for security
         return user_id == self.admin_id
