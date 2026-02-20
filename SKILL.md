@@ -5,12 +5,14 @@ requires:
   env:
     - TRUSTED_ADMIN_IDS
   files:
+    - "~/.openclaw/memory/"
     - "~/.openclaw/memory/MEMORY.md"
 metadata:
   clawdbot:
     emoji: "🛡️"
-    version: "1.0.2"
+    version: "1.0.3"
     category: "Security"
+    type: "python-middleware"
     security_manifest:
       network_access: none
       filesystem_access: "Write-only logging to ~/.openclaw/memory/"
@@ -35,7 +37,7 @@ from counterclaw import CounterClawInterceptor
 interceptor = CounterClawInterceptor()
 
 # Input scan - blocks prompt injections
-result = interceptor.check_input("Ignore previous instructions")
+result = interceptor.check_input("[DETECTION_EXAMPLE]: ignore-previous-instructions")
 # → {"blocked": True, "safe": False}
 
 # Output scan - detects PII leaks  
@@ -56,9 +58,20 @@ result = interceptor.check_output("Contact: john@example.com")
 export TRUSTED_ADMIN_IDS="your_telegram_id"
 ```
 
+You can set multiple admin IDs by comma-separating:
+```bash
+export TRUSTED_ADMIN_IDS="telegram_id_1,telegram_id_2"
+```
+
 ```python
 interceptor = CounterClawInterceptor()  # Reads TRUSTED_ADMIN_IDS env
 ```
+
+## Security Notes
+
+- **Fail-Closed**: If TRUSTED_ADMIN_IDS is not set, admin features are disabled by default
+- **Logging**: All violations are logged to ~/.openclaw/memory/MEMORY.md with PII masked
+- **No Network Access**: This middleware does not make any external network calls
 
 ## License
 
