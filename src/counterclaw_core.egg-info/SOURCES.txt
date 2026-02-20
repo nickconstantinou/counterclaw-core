@@ -1,0 +1,13 @@
+LICENSE
+README.md
+pyproject.toml
+src/counterclaw/__init__.py
+src/counterclaw/middleware.py
+src/counterclaw/scanner.py
+src/counterclaw_cli/__init__.py
+src/counterclaw_core.egg-info/PKG-INFO
+src/counterclaw_core.egg-info/SOURCES.txt
+src/counterclaw_core.egg-info/dependency_links.txt
+src/counterclaw_core.egg-info/requires.txt
+src/counterclaw_core.egg-info/top_level.txt
+tests/test_scanner.py
