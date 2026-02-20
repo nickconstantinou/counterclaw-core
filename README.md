@@ -20,7 +20,7 @@ from counterclaw import CounterClawInterceptor
 interceptor = CounterClawInterceptor()
 
 # Input scan - blocks prompt injections
-result = interceptor.check_input("[DETECTION_EXAMPLE]: ignore-previous-instructions")
+result = interceptor.check_input("[DETECTION_EXAMPLE]: bypass-system-prompt")
 # → {"blocked": True, "safe": False}
 
 # Output scan - detects PII
@@ -32,7 +32,7 @@ result = interceptor.check_output("Contact: john@example.com")
 
 ### 🔒 Prompt Injection Defense
 Blocks common patterns:
-- [DETECTION_EXAMPLE]: ignore-previous-instructions
+- [DETECTION_EXAMPLE]: bypass-system-prompt
 - [DETECTION_EXAMPLE]: pretend-to-be-dan
 - Role manipulation attempts
 

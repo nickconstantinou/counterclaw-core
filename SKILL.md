@@ -1,8 +1,9 @@
 ---
 name: counterclaw
 description: Defensive interceptor for prompt injection and basic PII masking.
+homepage: https://github.com/nickconstantinou/counterclaw-core
 install: "pip install ."
-requires:
+requirements:
   env:
     - TRUSTED_ADMIN_IDS
   files:
@@ -11,7 +12,7 @@ requires:
 metadata:
   clawdbot:
     emoji: "🛡️"
-    version: "1.0.4"
+    version: "1.0.5"
     category: "Security"
     type: "python-middleware"
     security_manifest:
@@ -38,7 +39,7 @@ from counterclaw import CounterClawInterceptor
 interceptor = CounterClawInterceptor()
 
 # Input scan - blocks prompt injections
-result = interceptor.check_input("[DETECTION_EXAMPLE]: ignore-previous-instructions")
+result = interceptor.check_input("[DETECTION_EXAMPLE]: bypass-system-prompt")
 # → {"blocked": True, "safe": False}
 
 # Output scan - detects PII leaks  

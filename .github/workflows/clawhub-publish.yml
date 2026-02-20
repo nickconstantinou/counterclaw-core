@@ -39,6 +39,6 @@ jobs:
           npx clawhub whoami
           
           # Publish
-          npx clawhub publish . --version 1.0.4
+          npx clawhub publish . --version 1.0.5 --env TRUSTED_ADMIN_IDS --homepage https://github.com/nickconstantinou/counterclaw-core
         env:
           CLAWHUB_TOKEN: ${{ secrets.CLAWHUB_TOKEN }}
