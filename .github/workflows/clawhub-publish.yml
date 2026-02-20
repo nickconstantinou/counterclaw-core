@@ -29,11 +29,7 @@ jobs:
       
       - name: Publish to ClawHub
         run: |
-          # Extract version from tag or use default
-          VERSION=${GITHUB_REF#refs/tags/v}
-          
-          # We're already in the skill directory (repo IS the skill)
-          # Publish directly
-          npx clawhub publish . --version $VERSION
+          # Publish directly with explicit version
+          npx clawhub publish . --version 1.0.2
         env:
           CLAWHUB_TOKEN: ${{ secrets.CLAWHUB_TOKEN }}
