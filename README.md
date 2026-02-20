@@ -87,3 +87,4 @@ Like a bear trap: simple, reliable, and snaps shut on threats.
 
 MIT - See [LICENSE](LICENSE)
 
+# v1.0.5
