@@ -32,10 +32,8 @@ jobs:
           # Extract version from tag or use default
           VERSION=${GITHUB_REF#refs/tags/v}
           
-          # Navigate to skill directory (adjust path as needed)
-          cd skills/counterclaw-core
-          
-          # Publish the skill
+          # We're already in the skill directory (repo IS the skill)
+          # Publish directly
           npx clawhub publish . --version $VERSION
         env:
           CLAWHUB_TOKEN: ${{ secrets.CLAWHUB_TOKEN }}
