@@ -1,0 +1,4 @@
+publish.sh
+.clawhub/
+.github/
+.git/

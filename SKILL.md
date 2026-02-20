@@ -1,6 +1,7 @@
 ---
 name: counterclaw
 description: Defensive interceptor for prompt injection and basic PII masking.
+install: "pip install ."
 requires:
   env:
     - TRUSTED_ADMIN_IDS
@@ -10,7 +11,7 @@ requires:
 metadata:
   clawdbot:
     emoji: "🛡️"
-    version: "1.0.3"
+    version: "1.0.4"
     category: "Security"
     type: "python-middleware"
     security_manifest:
