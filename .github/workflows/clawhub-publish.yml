@@ -33,7 +33,7 @@ jobs:
           export CLAWHUB_TOKEN=${{ secrets.CLAWHUB_TOKEN }}
           
           # Login with token
-          echo "$CLAWHUB_TOKEN" | npx clawhub login --token-stdin
+          npx clawhub login --token "$CLAWHUB_TOKEN" --no-browser
           
           # Check who we are
           npx clawhub whoami
