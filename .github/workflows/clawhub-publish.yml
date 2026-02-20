@@ -29,7 +29,13 @@ jobs:
       
       - name: Publish to ClawHub
         run: |
-          # Publish directly with explicit version
+          # Debug: show token presence (not value)
+          echo "CLAWHUB_TOKEN present: ${{ secrets.CLAWHUB_TOKEN != '' }}"
+          
+          # Check who we are
+          npx clawhub whoami
+          
+          # Publish
           npx clawhub publish . --version 1.0.2
         env:
           CLAWHUB_TOKEN: ${{ secrets.CLAWHUB_TOKEN }}
