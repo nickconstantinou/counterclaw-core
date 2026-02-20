@@ -1,0 +1,41 @@
+name: Publish to ClawHub
+
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - 'v*'
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          
+      - name: Install ClawHub CLI
+        run: npm install -g clawhub
+        env:
+          # You need to set CLAWHUB_TOKEN in GitHub secrets
+          # Go to repo Settings → Secrets → Actions → New repository secret
+          # Name: CLAWHUB_TOKEN
+          # Value: Your ClawHub token from clawhub CLI (run: clawhub auth token)
+          CLAWHUB_TOKEN: ${{ secrets.CLAWHUB_TOKEN }}
+      
+      - name: Publish to ClawHub
+        run: |
+          # Extract version from tag or use default
+          VERSION=${GITHUB_REF#refs/tags/v}
+          
+          # Navigate to skill directory (adjust path as needed)
+          cd skills/counterclaw-core
+          
+          # Publish the skill
+          npx clawhub publish . --version $VERSION
+        env:
+          CLAWHUB_TOKEN: ${{ secrets.CLAWHUB_TOKEN }}
