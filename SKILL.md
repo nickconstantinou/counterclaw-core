@@ -12,7 +12,7 @@ requirements:
 metadata:
   clawdbot:
     emoji: "🛡️"
-    version: "1.0.6"
+    version: "1.0.7"
     category: "Security"
     type: "python-middleware"
     security_manifest:

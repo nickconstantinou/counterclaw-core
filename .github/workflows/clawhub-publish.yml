@@ -39,6 +39,6 @@ jobs:
           npx clawhub whoami
           
           # Publish
-          npx clawhub publish . --version 1.0.6
+          npx clawhub publish . --version 1.0.7
         env:
           CLAWHUB_TOKEN: ${{ secrets.CLAWHUB_TOKEN }}
