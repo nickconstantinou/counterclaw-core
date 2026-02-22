@@ -78,3 +78,38 @@ interceptor = CounterClawInterceptor()  # Reads TRUSTED_ADMIN_IDS env
 ## License
 
 MIT - See LICENSE file
+
+## Development & Release
+
+### Running Tests Locally
+
+```bash
+python3 tests/test_scanner.py
+```
+
+### Linting
+
+```bash
+pip install ruff
+ruff check src/
+```
+
+### Publishing to ClawHub
+
+The CI runs on every push and pull request:
+1. **Ruff** - Lints Python code
+2. **Tests** - Runs unit tests
+
+To publish a new version:
+
+```bash
+# Update version in pyproject.toml
+git add -A
+git commit -m "Release v1.x.x"
+git tag v1.x.x
+git push origin master --tags
+```
+
+CI will automatically:
+- Run lint + tests
+- If tests pass and tag starts with `v*`, publish to ClawHub
