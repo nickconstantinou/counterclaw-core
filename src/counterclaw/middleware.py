@@ -75,7 +75,11 @@ class CounterClawInterceptor:
             self.admin_ids = []  # Empty = fail closed
         
         if not self.admin_ids:
-            print("⚠️ CounterClaw: No TRUSTED_ADMIN_IDS set. Admin features disabled (fail-closed).")
+            import sys
+            print("⚠️ CounterClaw WARNING: TRUSTED_ADMIN_IDS not set.", file=sys.stderr)
+            print("   Admin features are DISABLED (fail-closed).", file=sys.stderr)
+            print("   Set TRUSTED_ADMIN_IDS env var to enable admin features.", file=sys.stderr)
+            print("   Example: export TRUSTED_ADMIN_IDS='123456789'", file=sys.stderr)
         
         self.scanner = Scanner()
     
