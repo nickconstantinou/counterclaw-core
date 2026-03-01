@@ -46,6 +46,9 @@ Detects in outputs:
 ### 📝 Local Logging
 Violations logged to ~/.openclaw/memory/MEMORY.md with PII masked
 
+### 🌐 Optional Network Features
+The core scanner is **offline-only**. However, the optional email integration scripts (`send_protected_email.sh`) use the external `gog` CLI to send Gmail — this requires network access and credentials.
+
 ---
 
 ## Installation
